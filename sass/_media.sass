@@ -1,0 +1,252 @@
+@media ( max-width: 1200px )
+
+	.menu
+		padding: 15px 75px
+
+	.promo
+		&_header 
+			font-size: 53px
+
+	.second
+		&_item 
+			&_1
+				margin-left: 47px
+			&_2
+				margin-right: 47px
+			&_3
+				margin-left: 47px
+			&_4
+				margin-right: 47px
+			&_subtitle
+				font-size: 24px
+	.footer
+		&_wrapper > div 
+			width: 50%
+			&:nth-child(1)
+				width: 25%
+			&:nth-child(3)
+				width: 25%
+				display: flex 
+				justify-content: flex-end
+		&_mobile
+			display: flex
+			a 
+				margin: 0 3px
+				img 
+					width: 100%
+
+@media ( max-width: 991px )
+	.title 
+		font-size: 28px
+	.menu
+		padding: 15px 70px
+		&_item
+			padding-right: 8px
+		&_link
+			font-size: 10px
+
+
+	.promo
+		&_header
+			font-size: 40px
+		&_subheader
+			font-size: 30px
+
+	.second
+		&_item 
+			width: 90%
+			height: 260px
+			&_subtitle
+				font-size: 24px
+				margin-top: 5px
+
+	.questions
+		&_img
+			width: 100%
+		&_btn
+			margin: 390px 0 0 510px
+	.footer
+		&_social
+			margin: 30px 0 0 -100px	
+@media ( max-width: 767px )
+	.menu
+		position: fixed
+		flex-direction: column
+		justify-content: center
+		align-items: center
+		top: 0
+		left: -100%
+		right: 0
+		width: 50%
+		height: 100vh
+		padding: 20px 15px 15px
+		background-color: rgba(0,0,0, .8)
+		transition: 0.6s all
+		li
+			margin: 15px 0
+			.sp1
+				display: none
+		&_active
+			left: 0
+		&_item
+			padding-right: 0
+			border: none
+			margin: 10px 0
+		&_link
+			font-size: 20px
+	.batton_back
+		img
+			margin-left: 35px
+			margin-top: 8px
+	.hamburger
+		display: block
+		position: absolute
+		right: 10px
+		top: 50%
+		transform: translateY(-50%)
+		width: 26px
+		height: 12px
+		span 
+			display: block
+			height: 2px
+			width: 100%
+			background-color: #fff
+			margin-bottom: 2px
+			transition: 0.5s all
+		&_active
+			span
+				margin-bottom: -2px 
+				&:nth-child(1)
+					transform: translateY(3px) rotate(-45deg)
+				&:nth-child(2)
+					display: none
+				&:nth-child(3)
+					transform: translateY(3px) rotate(45deg)
+	.xs-hidden
+		display: none
+	.xs-visible
+		display: block
+
+	.promo
+		&_header
+			line-height: 45px
+
+	.questions
+		&_btn
+			margin: 390px 0 0 330px
+	.second
+		&_item 
+			width: 65%
+			height: 260px
+			&_1
+				margin-left: 88px
+			&_2
+				margin-right: 88px
+			&_3
+				margin-left: 88px
+			&_4
+				margin-right: 88px
+
+	.footer
+		&_links
+			width: 100%
+		&_social
+			background: none
+			img
+				display: inline
+				margin-left: 100px
+	
+	footer
+		&_wrapper
+			flex-wrap: wrap
+		&_wrapper > div 
+			width: 100%
+			display: flex 
+			justify-content: center
+			margin-bottom: 20px
+			&:nth-child(1)
+				width: 100%
+			&:nth-child(3)
+				width: 100%
+				justify-content: center
+
+@media ( max-width: 575px )
+	header
+		height: 30px
+	.promo
+		min-height: 400px
+		padding: 93px 0 35px 0
+		&_descr
+			display: none
+		&_header
+			font-size: 30px
+			padding: 0 24px
+			line-height: 35px
+		&_subheader
+			font-size: 20px
+			margin-top: 33px
+			padding: 0 10px
+			line-height: 30px
+		&_btn 
+			width: 210px
+			height: 50px
+			margin-top: 72px
+			font-size: 16px
+			&:hover
+				background-image: linear-gradient(to top, $main-color 0%, #4ce2ff 100%)
+	.menu
+		width: 85%
+		&_item
+			width: 100%
+			text-align: center
+			padding: 5px 0
+		&_link
+			display: block
+	.subtitle
+		display: none
+	.title
+		font-size: 15px
+		margin-top: 15px
+		line-height: 16px
+	.second
+		padding: 32px 0 8px 0
+		&_item 
+			width: 55%
+			height: 210px
+			&_1
+				margin-left: 30px
+			&_2
+				margin-right: 30px
+			&_3
+				margin-left: 30px
+			&_4
+				margin-right: 30px
+			&_subtitle
+				font-size: 18px
+				line-height: 26px
+	.carousel
+		padding: 20px 0 40px 0
+	.questions
+		min-height: 500px
+		padding: 40px 0 0 0
+		&_btn
+			margin: 220px 0 0 165px
+			width: 110px
+			height: 70px
+		&_img
+			height: 305px
+	.footer
+		max-height: 136px
+		&_links
+			margin-left: -70px
+			margin: 25px auto
+			&_main
+				text-align: center
+		&_social
+			margin: 20px 0 0 -100px
+
+	.hidden-320
+		display: none
+	
+
+
