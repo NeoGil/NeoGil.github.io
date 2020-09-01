@@ -64,10 +64,10 @@ nav {
   height: 50px;
   margin-top: 5px; }
 
-.button_back a {
+.back a {
   display: flex;
   justify-content: center; }
-.button_back img {
+.back_img {
   display: block;
   max-width: 100%;
   height: 40px;
@@ -339,9 +339,8 @@ nav {
     .menu_link {
       font-size: 20px; }
 
-  .batton_back img {
-    margin-left: 35px;
-    margin-top: 8px; }
+  .back_img {
+    margin-top: 10px; }
 
   .hamburger {
     display: block;
@@ -381,15 +380,8 @@ nav {
 
   .second_item {
     width: 65%;
-    height: 260px; }
-    .second_item_1 {
-      margin-left: 88px; }
-    .second_item_2 {
-      margin-right: 88px; }
-    .second_item_3 {
-      margin-left: 88px; }
-    .second_item_4 {
-      margin-right: 88px; }
+    height: 260px;
+    margin: 15px auto 0 auto; }
 
   .footer_links {
     width: 100%; }
@@ -412,14 +404,12 @@ nav {
       width: 100%;
       justify-content: center; } }
 @media (max-width: 575px) {
-  header {
-    height: 30px; }
-
   .promo {
-    min-height: 400px;
-    padding: 93px 0 35px 0; }
+    min-height: 576px;
+    padding: 125px 0 35px 0; }
     .promo_descr {
-      display: none; }
+      margin-top: 45px;
+      font-size: 16px; }
     .promo_header {
       font-size: 30px;
       padding: 0 24px;
@@ -435,7 +425,7 @@ nav {
       margin-top: 72px;
       font-size: 16px; }
       .promo_btn:hover {
-        background-image: linear-gradient(to top, #8C7C8C 0%, #4ce2ff 100%); }
+        background-image: linear-gradient(to top, #8C7C8C 0%, #8C7C8C 100%); }
 
   .menu {
     width: 85%; }
@@ -457,16 +447,9 @@ nav {
   .second {
     padding: 32px 0 8px 0; }
     .second_item {
-      width: 80%;
-      height: 210px; }
-      .second_item_1 {
-        margin-left: 30px; }
-      .second_item_2 {
-        margin-right: 30px; }
-      .second_item_3 {
-        margin-left: 30px; }
-      .second_item_4 {
-        margin-right: 30px; }
+      width: 55%;
+      height: 210px;
+      margin: 15px auto 0 auto; }
       .second_item_subtitle {
         font-size: 18px;
         line-height: 26px; }
@@ -478,7 +461,7 @@ nav {
     min-height: 500px;
     padding: 40px 0 0 0; }
     .questions_btn {
-      margin: 220px 0 0 165px;
+      margin: 220px 0 0 75%;
       width: 110px;
       height: 70px; }
     .questions_img {
@@ -492,7 +475,7 @@ nav {
       .footer_links_main {
         text-align: center; }
     .footer_social {
-      margin: 20px 0 0 -100px; }
+      margin: 9px 0 0 -100px; }
 
   .hidden-320 {
     display: none; } }

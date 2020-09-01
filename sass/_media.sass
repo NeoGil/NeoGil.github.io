@@ -94,10 +94,9 @@
 			margin: 10px 0
 		&_link
 			font-size: 20px
-	.batton_back
-		img
-			margin-left: 35px
-			margin-top: 8px
+	.back
+		&_img
+			margin-top: 10px
 	.hamburger
 		display: block
 		position: absolute
@@ -138,14 +137,7 @@
 		&_item 
 			width: 65%
 			height: 260px
-			&_1
-				margin-left: 88px
-			&_2
-				margin-right: 88px
-			&_3
-				margin-left: 88px
-			&_4
-				margin-right: 88px
+			margin: 15px auto 0 auto
 
 	.footer
 		&_links
@@ -171,13 +163,12 @@
 				justify-content: center
 
 @media ( max-width: 575px )
-	header
-		height: 30px
 	.promo
-		min-height: 400px
-		padding: 93px 0 35px 0
+		min-height: 576px
+		padding: 125px 0 35px 0
 		&_descr
-			display: none
+			margin-top: 45px
+			font-size: 16px
 		&_header
 			font-size: 30px
 			padding: 0 24px
@@ -193,7 +184,7 @@
 			margin-top: 72px
 			font-size: 16px
 			&:hover
-				background-image: linear-gradient(to top, $main-color 0%, #4ce2ff 100%)
+				background-image: linear-gradient(to top, $main-color 0%, $main-color  100%)
 	.menu
 		width: 85%
 		&_item
@@ -202,6 +193,7 @@
 			padding: 5px 0
 		&_link
 			display: block
+			
 	.subtitle
 		display: none
 	.title
@@ -213,14 +205,7 @@
 		&_item 
 			width: 55%
 			height: 210px
-			&_1
-				margin-left: 30px
-			&_2
-				margin-right: 30px
-			&_3
-				margin-left: 30px
-			&_4
-				margin-right: 30px
+			margin: 15px auto 0 auto
 			&_subtitle
 				font-size: 18px
 				line-height: 26px
@@ -230,7 +215,7 @@
 		min-height: 500px
 		padding: 40px 0 0 0
 		&_btn
-			margin: 220px 0 0 165px
+			margin: 220px 0 0 75%
 			width: 110px
 			height: 70px
 		&_img
@@ -243,10 +228,9 @@
 			&_main
 				text-align: center
 		&_social
-			margin: 20px 0 0 -100px
+			margin: 9px 0 0 -100px
 
 	.hidden-320
 		display: none
 	
-
 
