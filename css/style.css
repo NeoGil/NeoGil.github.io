@@ -250,6 +250,32 @@ nav {
       font-size: 18px;
       font-weight: 300; }
 
+.card {
+  background: none; }
+
+.crossroads {
+  min-height: 750px;
+  padding: 110px 0 0 0;
+  background: url("../icons/bagraunds/crossroad_bg.jpg") center center/cover no-repeat; }
+  .crossroads .btn {
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 42px;
+    color: #8C7C8C; }
+  .crossroads .direction {
+    text-align: center;
+    font-weight: 700;
+    font-size: 32px;
+    color: #8C7C8C;
+    margin-bottom: 20px; }
+  .crossroads .card-body {
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 42px;
+    color: #8C7C8C; }
+    .crossroads .card-body a {
+      color: #5E5555; }
+
 @media (max-width: 1200px) {
   .menu {
     padding: 15px 75px; }
