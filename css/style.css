@@ -75,7 +75,7 @@ nav {
 
 .promo {
   min-height: 1000px;
-  background: url("../icons/bagraunds/Group 11 (1).png") center center/cover no-repeat;
+  background: url("../icons/bagraunds/promo.webp") center center/cover no-repeat;
   padding: 200px 0 243px 0;
   position: relative; }
   .promo_header {
@@ -155,7 +155,7 @@ nav {
 .second {
   min-height: 1080px;
   padding: 110px 0 243px 0;
-  background: url("../icons/bagraunds/Group 12.jpg") center center/cover no-repeat; }
+  background: url("../icons/bagraunds/second.webp") center center/cover no-repeat; }
   .second .row {
     margin-top: 32px; }
   .second_item {
@@ -166,16 +166,16 @@ nav {
     margin-bottom: 19px;
     padding-top: 92px; }
     .second_item_1 {
-      background: url("../icons/bagraunds/mobile_screen_1.png") center center/cover no-repeat;
+      background: url("../icons/bagraunds/mobile_screen_1.webp") center center/cover no-repeat;
       margin-left: 149px; }
     .second_item_2 {
-      background: url("../icons/bagraunds/mobile_screen_2.png") center center/cover no-repeat;
+      background: url("../icons/bagraunds/mobile_screen_2.webp") center center/cover no-repeat;
       margin-right: 149px; }
     .second_item_3 {
-      background: url("../icons/bagraunds/mobile_screen_3.png") center center/cover no-repeat;
+      background: url("../icons/bagraunds/mobile_screen_3.webp") center center/cover no-repeat;
       margin-left: 149px; }
     .second_item_4 {
-      background: url("../icons/bagraunds/mobile_screen_4.png") center center/cover no-repeat;
+      background: url("../icons/bagraunds/mobile_screen_4.webp") center center/cover no-repeat;
       margin-right: 149px; }
     .second_item_subtitle {
       color: #ffffff;
@@ -189,19 +189,19 @@ nav {
 .carousel {
   max-height: 1080px;
   padding: 55px 0 40px 0;
-  background: url("../icons/bagraunds/carusel.png") center center/cover no-repeat; }
+  background: url("../icons/bagraunds/carusel.webp") center center/cover no-repeat; }
 
 .questions {
   min-height: 906px;
   padding: 55px 0 40px 0;
-  background: url("../icons/bagraunds/questions.png") center center/cover no-repeat; }
+  background: url("../icons/bagraunds/questions.webp") center center/cover no-repeat; }
   .questions_img {
     margin: 20px auto 0 auto;
     width: 760px;
     height: 505px;
     display: flex;
     justify-content: space-between;
-    background: url("../icons/bagraunds/bg_qv.png") center center/cover no-repeat; }
+    background: url("../icons/bagraunds/bg_qv.webp") center center/cover no-repeat; }
   .questions_btn {
     display: block;
     margin: 390px 0 0 570px;
@@ -256,7 +256,7 @@ nav {
 .crossroads {
   min-height: 980px;
   padding: 110px 0 40px 0;
-  background: url("../icons/bagraunds/crossroad_bg.jpg") center center/cover no-repeat; }
+  background: url("../icons/bagraunds/crossroad_bg.webp") center center/cover no-repeat; }
   .crossroads .btn {
     font-weight: bold;
     font-size: 20px;
@@ -320,7 +320,7 @@ input[type=radio]:disabled + label {
     background: linear-gradient(180deg, #8C7C7C 0%, #AA4646 79.92%); }
 
 .filling {
-  background: url("../icons/bagraunds/crossroad_bg.jpg") center center/cover no-repeat;
+  background: url("../icons/bagraunds/crossroad_bg.webp") center center/cover no-repeat;
   padding: 110px 0 40px 0; }
 
 .content {
