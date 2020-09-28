@@ -1,4 +1,4 @@
-body 
+body
 	margin: 0px
 	background-color: #726868
 
@@ -23,7 +23,7 @@ nav
 	line-height: 14px
 	text-align: center
 	z-index: 1
-	span 
+	span
 		display: block
 		height: 2px
 		width: 100%
@@ -50,11 +50,11 @@ nav
 			text-decoration: none
 	li
 		&:hover
-			span 
+			span
 				background-color: $main-color
 	&_item
 		padding-right: 28px
-	
+
 .logo
 	a
 		display: flex
@@ -124,10 +124,10 @@ nav
 	font-weight: 300
 	text-transform: uppercase
 	text-align: center
-	&_white 
+	&_white
 		background-color: $third-color
 		color: #000
-	&_min 
+	&_min
 		width: 76px
 
 .title
@@ -140,7 +140,7 @@ nav
 	font-weight: 700
 	text-transform: uppercase
 	text-align: center
-	&_white 
+	&_white
 		color: #fff
 
 .subtitle
@@ -150,16 +150,16 @@ nav
 	font-size: 17px
 	font-weight: 400
 	text-align: center
-	&_white 
+	&_white
 		color: $third-color
 
 .second
 	min-height: 1080px
 	padding: 110px 0 243px 0
 	background: url('../icons/bagraunds/second.webp') center (center / cover) no-repeat
-	.row 
+	.row
 		margin-top: 32px
-	&_item 
+	&_item
 		position: relative
 		width: 404px
 		height: 317px
@@ -203,7 +203,7 @@ nav
 		justify-content: space-between
 		background: url('../icons/bagraunds/bg_qv.webp') center (center / cover) no-repeat
 	&_btn
-		
+
 		display: block
 		margin: 390px 0 0 570px
 		width: 160px
@@ -222,13 +222,13 @@ nav
 .footer
 	min-height: 136px
 	&_wrapper
-		display: flex 
+		display: flex
 		justify-content: space-between
 		align-items: flex-start
-	&_wrapper > div 
+	&_wrapper > div
 		width: 33%
 		&:nth-child(3)
-			display: flex 
+			display: flex
 			justify-content: flex-end
 	&_social
 		display: flex
@@ -242,8 +242,8 @@ nav
 	&_links
 		width: 390px
 		margin: 50px auto
-		&_main 
-			display: flex 
+		&_main
+			display: flex
 			justify-content: center
 			color: $third-color
 			font-size: 18px
@@ -274,12 +274,12 @@ nav
 		color: $main-color
 		a
 			color: $fix-color
-	
+
 .radio_switch
 	.btn-group
 		height: 40px
 		margin-top: -4px
-	
+
 
 .form_radio_group
 	display: inline-block
@@ -323,13 +323,23 @@ input[type=radio]:disabled + label
 	color: #666
 
 .dropdown
-	display: none
+	display: inline-block
+	position: fixed
+	margin-top: 55px
+	z-index: 1
 	.btn
+		margin-top: 5px
 		background: linear-gradient(180deg, #8C7C7C 0%, #AA4646 79.92%)
-			
+
 .filling
 	background: url('../icons/bagraunds/crossroad_bg.webp') center (center / cover) no-repeat
 	padding: 110px 0 40px 0
+	img
+		width: 50%
+	p
+		text-indent: 30px
+		text-align: -webkit-auto
+
 .content
 	font-weight: normal
 	font-size: 18px
@@ -339,4 +349,3 @@ input[type=radio]:disabled + label
 	h1
 		font-size: 24px
 		text-align: center
-	
