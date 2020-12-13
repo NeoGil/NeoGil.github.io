@@ -1,9 +1,11 @@
+<!-- General site footer -->
 <footer>
 	<div class="footer_wrapper">
 		<div>
+			<!-- link to instagram -->
 			<a href="<?php echo $config['INST_url']; ?>" target="_blank">
 				<div class="footer_social">
-					<img src="icons/iso/social_mb.webp" alt="">
+					<img src="icons/iso/social_mb.svg" alt="instagram">
 				</div>
 			</a>
 		</div>
@@ -22,3 +24,4 @@
 		</div>
 	</div>
 </footer>
+<?php ob_end_flush(); ?>

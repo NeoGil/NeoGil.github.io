@@ -1,5 +1,4 @@
 <?php
-
 require "includes/config.php";
 
 ?>
@@ -19,7 +18,7 @@ require "includes/config.php";
 	</head>
 	<body>
 		<!-- Здесь подключается header страницы -->
-		<?php include "includes/header.php" ?>
+		<?php include "includes/header.php"; ob_end_flush();?>
 		<!-- Первая секция основной страницы -->
 		<section class="promo">
 			<div class="container">
@@ -45,6 +44,7 @@ require "includes/config.php";
 					<?php
 						$query = $mysqli->query('SELECT * FROM `articles_categories`');
 					?>
+					<!-- generates cards with specific images and unique id links -->
 					<?php
 						while ($item = mysqli_fetch_assoc($query))
 						{
@@ -77,13 +77,13 @@ require "includes/config.php";
 					</ol>
 					<div class="carousel-inner">
 						<div class="carousel-item active">
-						<img class="d-block w-100" src="icons/iso/ionwork1.webp" alt="Первый слайд">
+						<img class="d-block w-100" src="icons/iso/ionwork1.png" alt="Первый слайд">
 						</div>
 						<div class="carousel-item">
-						<img class="d-block w-100" src="icons/iso/ionwork2.webp" alt="Второй слайд">
+						<img class="d-block w-100" src="icons/iso/ionwork2.png" alt="Второй слайд">
 						</div>
 						<div class="carousel-item">
-						<img class="d-block w-100" src="icons/iso/ionwork3.webp" alt="Третий слайд">
+						<img class="d-block w-100" src="icons/iso/ionwork3.png" alt="Третий слайд">
 						</div>
 					</div>
 					<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">

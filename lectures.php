@@ -1,7 +1,5 @@
 <?php
-
 require "includes/config.php";
-
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -12,42 +10,15 @@ require "includes/config.php";
 		<link rel="stylesheet" href="css/bootstrap-reboot.min.css">
 		<link rel="stylesheet" href="css/bootstrap-grid.min.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		
 		<link rel="stylesheet" href="css/style.min.css">
+		<link rel="stylesheet" href="css/styless.min.css">
 		<title>NEKRASOVA SCHOOL</title>
 	</head>
 	<body>
 		<?php include "includes/header.php" ?>
-				<!-- <div class="form_radio_group">
-					<div class="form_radio_group-item">
-						<input id="radio-1" type="radio" name="radio" value="1" checked>
-						<label for="radio-1">Теор. часть</label>
-					</div>
-					<div class="form_radio_group-item">
-						<input id="radio-2" type="radio" name="radio" value="2">
-						<label for="radio-2">Лб. работа</label>
-					</div>
-					<div class="form_radio_group-item">
-						<input id="radio-3" type="radio" name="radio" value="3">
-						<label for="radio-3">Практика</label>
-					</div>
-					<div class="form_radio_group-item">
-						<input id="radio-4" type="radio" name="radio" value="4" disabled>
-						<label for="radio-4">Тесты</label>
-					</div>
-					<div class="form_radio_group-item">
-						<input id="radio-5" type="radio" name="radio" value="5" disabled>
-						<label for="radio-5">Видео материалы</label>
-					</div>
-					<div class="form_radio_group-item">
-						<input id="radio-6" type="radio" name="radio" value="6" disabled>
-						<label for="radio-6">Справочные материалы</label>
-					</div>
-				</div> -->
-
 				<div class="dropdown">
-					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Материалы
-					</button>
+					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 						<a class="dropdown-item" href="#">Теор. часть</a>
 						<a class="dropdown-item" href="#">Лб. работа</a>
@@ -57,30 +28,6 @@ require "includes/config.php";
 						<a class="dropdown-item" href="#"> Справочные материалы</a>
 					</div>
 				</div>
-
-				<!--<div class="radio_switch">
-					<div class="btn-group btn-group-toggle" data-toggle="buttons">
-						<label class="btn btn-secondary active">
-							<input type="radio" name="options" id="option1" checked> Теор. часть
-						</label>
-						<label class="btn btn-secondary">
-							<input type="radio" name="options" id="option2"> Лб. работа
-						</label>
-						<label class="btn btn-secondary">
-							<input type="radio" name="options" id="option3"> Практика
-						</label>
-						<label class="btn btn-secondary">
-							<input type="radio" name="options" id="option4"> Тесты
-						</label>
-						<label class="btn btn-secondary">
-							<input type="radio" name="options" id="option5"> Видео материалы
-						</label>
-						<label class="btn btn-secondary">
-							<input type="radio" name="options" id="option6"> Справочные материалы
-						</label>
-					</div>
-				</div>-->
-
 		<div class="filling">
 
 			<div class="container">
@@ -88,14 +35,111 @@ require "includes/config.php";
 					<div class="col">
 						<div class="content">
 							<?php
-
+								$article = mysqli_fetch_assoc($mysqli->query('SELECT * FROM `articles_id`'));
 								$quer = $mysqli->query('SELECT * FROM `materials` WHERE `id` ='.(int)$_GET['id']);
-								$materials = mysqli_fetch_assoc($quer)
+								$materials = mysqli_fetch_assoc($quer);
+								/*checks the sent id for extra characters*/
+								if (mysqli_num_rows($quer) <= 0 ) {
+									?>
+									<section class="crossroads">
+										<div class="container">
+											<div class="row">
+												<div class="col-md-12">
+													<h2 class="direction">Ощибка</h2>
+												</div>
+											</div>
+										</div>
+									</section>
+									<?php
+								} elseif ( $materials['article_id'] == 4) {
+									
+                                    //$coun = $mysqli->query('SELECT COUNT(*) FROM `questions` WHERE `material-id` ='.(int)$_GET['id']);
+									
+									//$count = mysqli_fetch_assoc($coun);
+									
+									$result = $mysqli->query('SELECT * FROM `questions` WHERE `material-id` ='.(int)$_GET['id']); 
+                                    $qwest = null;
+									while($myrow = mysqli_fetch_assoc($result)) {
+										$json = json_decode(file_get_contents('qwest.json'), true);
+										$question = $myrow['question'];
+										
+										//$js  = ['sldf','sldf','sldf','sldf','sldf'];
+										//var_dump($js);
+										//$js[] = $ans;
+										//var_dump($js);
+										//$nonw = ['a','b','d','s','g'];
+										$correctAnswer = 'c';
+										$json = [];
+										$arr = [];
+                                        $pops = [];
+										$arrs['question'] = $question;
+										$question_id =  (int)$myrow['id'];
+                                        //echo $question_id;
+										$resul = $mysqli->query('SELECT * FROM `answers` WHERE `question-id` ='.$question_id); 
+										$js = [];
+                                        $n = '';
+										while ($myrows = mysqli_fetch_assoc($resul)) {
+											$js[] = $myrows['answer'];
+											$pops[$myrows['name']] =$myrows['answer'] ;
+											$arrs['answers'] = $pops;
+											if ($myrows['choice'] == 1) {
+                                                $n =$n.$myrows['name'];
+											}
+											$arrs['correctAnswer'] = $n;
+										}
+										//$arrs['correctAnswer'] = $correctAnswer;
+										//var_dump($arrs);
+										$qwest[] = $arrs;
+									}
+										
+										
+										
+									//}
+									file_put_contents('qwest.json', json_encode($qwest, JSON_UNESCAPED_UNICODE));
+									
+									?>
+									<div class="quest"
+										<div class="container">
+											<div class="row">
+												<div class="col-md-12">
+													<h2 class="direction"><?php echo $materials['title']; ?></h2>
+													<h4 class="direction"><?php echo $materials['text']; ?></h2>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-12">
+													<div class="page">
+														<div class="dark-area clearfix">
+															<div class="clearfix">
+																<div class="c100 p50 big dark">
+																	<span id="persent"><div id="results"></div></span>
+																	<div class="slice">
+																		<div class="bar"></div>
+																		<div class="fill"></div>
+																	</div>
+																</div>           
+															</div>
+														</div>
+													</div>   
+													<div id="quiz"></div>
+													<button id="submit">Начать тест</button>
+												</div>
+											</div>
+										</div>
+									</div>			
+									<?php
+								} else {
+									//var_dump($materials);
+									//$materials = mysqli_fetch_assoc($quer)
+									?>
+									<h1><?php echo $materials['title']; ?></h1>
+									<?php
+									echo $materials['text'];
+								}
 
 							?>
-							<h1><?php echo $materials['title']; ?>
-							</h1>
-							<?php echo $materials['text'] ?>
+
+
 						</div>
 					</div>
 				</div>
@@ -103,27 +147,10 @@ require "includes/config.php";
 
 		</div>
 
-		<footer>
-			<div class="footer_wrapper">
-				<div>
-					<a href="https://www.instagram.com/school_nekrasova/?igshid=c7kll25lgc6y">
-						<div class="footer_social">
-							<img src="icons/iso/Group 18.png" alt="">
-						</div>
-					</a>
-				</div>
-				<div>
-					<div class="footer_links">
-						<div class="footer_links_main">
-							NEKRASOVA SCHOOL
-						</div>
-					</div>
-				</div>
-				<div>
-					<div class="footer_mobile">					</div>
-				</div>
-			</div>
-		</footer>
+		<!-- Здесь подключается footer страницы -->
+		<?php include "includes/footer.php" ?>
+		<!-- Здесь подключаются js скрипты -->
+		<script src="js/alfa.js"></script>
 		<script src="js/hamburger.js"></script>
 		<script src="js/jquery-3.5.1.slim.min.js"></script>
 		<script src="js/popper.min.js"></script>

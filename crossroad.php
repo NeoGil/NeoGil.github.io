@@ -20,9 +20,10 @@ require "includes/config.php";
 		<?php include "includes/header.php" ?>
 		<!-- Первая секция основной страницы -->
 
-
+		<!-- generates cards with specific images and unique id links -->
 		<?php
 			$article = $mysqli->query("SELECT * FROM `articles_categories` WHERE `id` =".(int)$_GET['id']);
+			/*checks the sent id for extra characters*/
 		  	if (mysqli_num_rows($article) <= 0 )
 		  	{
 				?>
@@ -30,7 +31,7 @@ require "includes/config.php";
 					<div class="container">
 						<div class="row">
 							<div class="col-md-12">
-								<h2 class="direction"> <?php echo $article; ?></h2>
+								<h2 class="direction">Ощибка</h2>
 							</div>
 						</div>
 					</div>
