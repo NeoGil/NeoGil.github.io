@@ -417,6 +417,11 @@ button {
   margin: 20px 0px 20px 0px;
   padding: 10px; }
 
+.testing .cke_contents {
+  height: 60px !important;
+  margin-top: 2px; }
+.testing .cke_top {
+  display: none; }
 .testing_form {
   background: rgba(140, 124, 124, 0.2);
   margin: 20px 0px 20px 0px;

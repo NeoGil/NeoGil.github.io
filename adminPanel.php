@@ -282,7 +282,12 @@ ob_start();
 									$n = 1;
 									while ($resuls = mysqli_fetch_assoc($resulst)) {
                                         $b = $n - 1;
-                                        $test = '<textarea name="test['.$b.'][question]" id="1" cols="80" rows="10" placeholder="Введите вопрос '.$n.'">'.$resuls['question'].'</textarea>
+                                        $test = '
+										<h5>Вопрос '.$n.'</h5>
+										<textarea name="test['.$b.'][question]" id="1" cols="60" rows="10" placeholder="Введите вопрос '.$n.'">'.$resuls['question'].'</textarea>
+										<script>
+											CKEDITOR.replace( "test['.$b.'][question]" );
+										</script>
 										';
 										
                                         $id = $resuls['id'];
@@ -296,7 +301,10 @@ ob_start();
                                                     $chec = '';
 												}
 												$answer .= '<div class="col-md-4 col-lg-3">
-												<input type="text" name="test['.$b.'][answer]['.$a.']", placeholder="Введите ответ" value="'.$resuls['answer'].'">
+												<textarea name="test['.$b.'][answer]['.$a.']" id="1" cols="60" rows="10" placeholder="Введите вопрос '.$n.'">'.$resuls['answer'].'</textarea>
+												<script>
+													CKEDITOR.replace( "test['.$b.'][answer]['.$a.']" );
+												</script>
 												<input type="checkbox" value="1" name="test['.$b.'][choice]['.$a.']" '.$chec.'>
 											</div>';
                                             $a++;
@@ -307,6 +315,7 @@ ob_start();
 										<div class="testing_form" id="test1">
 											'.$test.'
 											<div class="answer">
+												<h5>Варианты ответов</h5>
 												<div class="row">
 													'.$answer.'
 												</div>
@@ -422,14 +431,14 @@ ob_start();
 				break;
 				case 'add_article':
 					
-					if ($_GET['id'] == 1) {
+					if ($_GET['id'] == 1 or $_GET['id'] == 2 or $_GET['id'] == 3 or $_GET['id'] == 5) {
 						if (isset($_POST['title'])) {
 							if ($_POST['title'] == '') {
 								echo '<p>Произошла ошибка: Вы не назвали статью</p>';
 							} else {
 								$check = mysqli_query($GLOBALS['mysqli'], "SELECT * FROM materials WHERE title='$_POST[title]'");
 								if (mysqli_num_rows($check) == 0) {
-									$result = $mysqli->query("INSERT INTO `materials` (`id`, `title`, `text`, `category_id`, `article_id`) VALUES (NULL, '{$_POST['title']}', '{$_POST['editor1']}', '{$_POST['radio-ct']}', '1');");
+									$result = $mysqli->query("INSERT INTO `materials` (`id`, `title`, `text`, `category_id`, `article_id`) VALUES (NULL, '{$_POST['title']}', '{$_POST['editor1']}', '{$_POST['radio-ct']}', '{$_GET['id']}');");
 								} else {
 									echo '<p>Произошла ошибка: Есть статья с таким названием! </p>';
 								}
@@ -442,12 +451,6 @@ ob_start();
 								}
 							}
 						}
-					} else if ($_GET['id'] == 2 ) {
-						echo '<p>Произошла ошибка: Данный функционал неготов( сори:) )</p> <a href="?act=home"><- Вернуться</a><br>';
-						break;
-					} else if ($_GET['id'] == 3 ) {
-						echo '<p>Произошла ошибка: Данный функционал неготов( сори:) )</p> <a href="?act=home"><- Вернуться</a><br>';
-						break;
 					} else if ($_GET['id'] == 4 ) {
 									
 						if (isset($_POST['title'])) {
@@ -533,23 +536,49 @@ ob_start();
 						<h5>Напишите парочку вопросов</h5>
 						<div class="testing">
 							<div class="testing_form" id="test1">
-								<textarea name="test[0][question]" id="1" cols="80" rows="10" placeholder="Введите вопрос 1"></textarea>
+								<h5>Вопрос 1</h5>
+								<textarea name="test[0][question]" id="1" cols="60" rows="10" placeholder="Введите вопрос 1"></textarea>
+								<script>
+									CKEDITOR.replace( "test[0][question]" );
+								</script>
+								<h5>Варианты ответов</h5>
 								<div class="answer">
 									<div class="row">
 										<div class="col-md-4 col-lg-3">
-											<input type="text" name="test[0][answer][1]", placeholder="Введите ответ">
+											<textarea name="test[0][answer][1]" id="test[0][answer][1]" rows="10" cols="80" placeholder="Введите ответ">
+						
+											</textarea>
+											<script>
+												CKEDITOR.replace( "test[0][answer][1]" );
+											</script>
+											
 											<input type="checkbox" value="1" name="test[0][choice][1]">
 										</div>
 										<div class="col-md-4 col-lg-3">
-											<input type="text" name="test[0][answer][2]", placeholder="Введите ответ">
+											<textarea name="test[0][answer][2]" id="test[0][answer][2]" rows="10" cols="80" placeholder="Введите ответ">
+						
+											</textarea>
+											<script>
+												CKEDITOR.replace( "test[0][answer][2]" );
+											</script>
 											<input type="checkbox" value="1" name="test[0][choice][2]">
 										</div>
 										<div class="col-md-4 col-lg-3">
-											<input type="text" name="test[0][answer][3]", placeholder="Введите ответ">
+											<textarea name="test[0][answer][3]" id="test[0][answer][3]" rows="10" cols="80" placeholder="Введите ответ">
+							
+											</textarea>
+											<script>
+												CKEDITOR.replace( "test[0][answer][3]" );
+											</script>
 											<input type="checkbox" value="1" name="test[0][choice][3]">
 										</div>
 										<div class="col-md-4 col-lg-3">
-											<input type="text" name="test[0][answer][4]", placeholder="Введите ответ">
+											<textarea name="test[0][answer][4]" id="test[0][answer][4]" rows="10" cols="80" placeholder="Введите ответ">
+						
+											</textarea>
+											<script>
+												CKEDITOR.replace( "test[0][answer][4]" );
+											</script>
 											<input type="checkbox" value="1" name="test[0][choice][4]">
 										</div>
 									</div>
@@ -561,23 +590,50 @@ ob_start();
 								</div>
 							</div>
 							<div class="testing_form" id="test1">
+								<h5>Вопрос 2</h5>
 								<textarea name="test[1][question]" id="1" cols="80" rows="10" placeholder="Введите вопрос 2"></textarea>
+						
+								</textarea>
+								<script>
+									CKEDITOR.replace( "test[1][question]" );
+								</script>
+								<h5>Варианты ответов</h5>
 								<div class="answer">
 									<div class="row">
 										<div class="col-md-4 col-lg-3">
-											<input type="text" name="test[1][answer][1]", placeholder="Введите ответ">
+											<textarea name="test[1][answer][1]" id="test[1][answer][1]" rows="10" cols="80" placeholder="Введите ответ">
+						
+											</textarea>
+											<script>
+												CKEDITOR.replace( "test[1][answer][1]" );
+											</script>
 											<input type="checkbox" value="1" name="test[1][choice][1]">
 										</div>
 										<div class="col-md-4 col-lg-3">
-											<input type="text" name="test[1][answer][2]", placeholder="Введите ответ">
+											<textarea name="test[1][answer][2]" id="test[1][answer][2]" rows="10" cols="80" placeholder="Введите ответ">
+						
+											</textarea>
+											<script>
+												CKEDITOR.replace( "test[1][answer][2]" );
+											</script>
 											<input type="checkbox" value="1" name="test[1][choice][2]">
 										</div>
 										<div class="col-md-4 col-lg-3">
-											<input type="text" name="test[1][answer][3]", placeholder="Введите ответ">
+											<textarea name="test[1][answer][3]" id="test[1][answer][3]" rows="10" cols="80" placeholder="Введите ответ">
+						
+											</textarea>
+											<script>
+												CKEDITOR.replace( "test[1][answer][3]" );
+											</script>
 											<input type="checkbox" value="1" name="test[1][choice][3]">
 										</div>
 										<div class="col-md-4 col-lg-3">
-											<input type="text" name="test[1][answer][4]", placeholder="Введите ответ">
+											<textarea name="test[1][answer][4]" id="test[1][answer][4]" rows="10" cols="80" placeholder="Введите ответ">
+						
+											</textarea>
+											<script>
+												CKEDITOR.replace( "test[1][answer][4]" );
+											</script>
 											<input type="checkbox" value="1" name="test[1][choice][4]">
 										</div>
 									</div>
@@ -599,10 +655,7 @@ ob_start();
 					</div>';
 
 
-					} else if ($_GET['id'] == 5 ) {
-						echo '<p>Произошла ошибка: Данный функционал неготов( сори:) )</p> <a href="?act=home"><- Вернуться</a><br>';
-						break;
-					}
+					} 
 					
 					
 
