@@ -94,6 +94,7 @@ ob_start();
 					} else {
 						$users = "Статей пока нет";
 					}
+					$resultsC = $mysqli->query("SELECT * FROM articles_categories WHERE id='5'");
 					$echo = "   $articl
 								<div class='col-md'>
 									<div class='table'>
@@ -105,22 +106,281 @@ ob_start();
 											</div>
 										</div>
 									</div>
-								</div>";
+								</div><div class='col-md'>
+								<div class='ar_ct'>
+									<div class='table'>
+										<div class='table-wrapper'>
+											<div class='table-title'>Спец настройки</div>
+											<div class='table-content'>
+												<div class='table-content__list-item'>
+													<a href='?act=edit_article&ct=5'>Споавочные данные</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>";
 				break;
 				case 'edit_article':
-					if(isset($_GET['id'])) {
-						$id = $_GET['id'];
-						$result = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM materials WHERE id='$id'");
+					if(isset($_GET['ct'])) {
+						$id = $_GET['ct'];
+						$result = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM articles_categories WHERE id='$id'");
 						//echo mysqli_num_rows($result);
 						$article = mysqli_fetch_array($result);
-						$Ob = null;
+						$echo = "
+								<div class='table'>
+									<div class='table-wrapper'>
+										<div class='table-title'>Редактирование статьи</div>
+										<div class='table-content'>
+											<a href='?act=home'><- Вернуться</a><br>
+											$message
+											<form method='post' class='article-form'>
+												<b>Название: </b>
+												<b>Текст:</b>
+												<textarea name='textc' id='textc' rows='10' cols='80'>
+													$article[text]
+												</textarea>
+												<script>
+													CKEDITOR.replace( 'textc' );
+												</script>
+												</br>
+												<input type='submit' class='button' value='Сохранить'>
+											</form>
+										</div>
+									</div>
+								</div>";
+					}
+                    if (isset($_GET['id'])) {
+                        $id = $_GET['id'];
+                        $result = mysqli_query($GLOBALS['mysqli'], "SELECT * FROM materials WHERE id='$id'");
+                        //echo mysqli_num_rows($result);
+                        $article = mysqli_fetch_array($result);
+                        $Ob = null;
                         $N = null;
-						$Or = null;
-						$S = null;
+                        $Or = null;
+                        $S = null;
+                    }
 						
-						
-						function TextСhange($article)
-						{
+					function TextСhange($article) {
+						if ($article['category_id'] == 1) {
+							$Ob = 'checked';
+						} else if ($article['category_id'] == 2) {
+							$N = 'checked';
+						} else if ($article['category_id'] == 3) {
+							$Or = 'checked';
+						} else if ($article['category_id'] == 4) {
+							$S = 'checked';
+						}
+						$echo = "
+							<div class='table'>
+								<div class='table-wrapper'>
+									<div class='table-title'>Редактирование статьи</div>
+									<div class='table-content'>
+										<a href='?act=home'><- Вернуться</a><br>
+										$message
+										<form method='post' class='article-form'>
+											<div class='form_radio_btn'>
+												<input id='radio-1' type='radio' name='radio-ct' value='1' $Ob>
+												<label for='radio-1'>Общая химия</label>
+											</div>
+											
+											<div class='form_radio_btn'>
+												<input id='radio-2' type='radio' name='radio-ct' value='2' $N>
+												<label for='radio-2'>Неорганическая химия</label>
+											</div>
+											
+											<div class='form_radio_btn'>
+												<input id='radio-3' type='radio' name='radio-ct' value='3' $Or>
+												<label for='radio-3'>Органическая химия</label>
+											</div>
+											
+											<div class='form_radio_btn'>
+												<input id='radio-4' type='radio' name='radio-ct' value='4' $S>
+												<label for='radio-4'>Cпециальные вопросы химии</label>
+											</div><br>
+											<b>Название:</b> <input type='text' name='title' value='$article[title]'><br>
+											<b>Текст:</b>
+											<textarea name='text' id='text' rows='10' cols='80'>
+												$article[text]
+											</textarea>
+											<script>
+												CKEDITOR.replace( 'text' );
+											</script>
+											</br>
+											<input type='submit' class='button' value='Сохранить'>
+										</form>
+									</div>
+								</div>
+							</div>";
+						return $echo;
+					}
+					if(mysqli_num_rows($result) == 1) {
+						if(isset($_POST['title']) && isset($_POST['text'])) {
+							//Тут должна быть валидация
+							//Обновление таблицы
+							$update = mysqli_query($GLOBALS['mysqli'],"UPDATE materials SET title='$_POST[title]', text='$_POST[text]' WHERE id='$id'");
+							if(isset($_POST['radio-ct'])) {
+								$update = mysqli_query($GLOBALS['mysqli'],"UPDATE materials SET category_id=".$_POST['radio-ct']." WHERE id='$id'");
+							}
+							if($update) {
+								//Если обновление прошло успешно, получаются новые данные
+								$result = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM materials WHERE id='$id'");
+								$message = "Успешно обновлено!";
+								header("Refresh:0");
+								
+							}
+						} elseif (isset($_POST['textc']) && $_GET['ct'] == 5) {
+							$update = mysqli_query($GLOBALS['mysqli'],"UPDATE articles_categories SET text='$_POST[textc]' WHERE id='5'");
+							if($update) {
+								//Если обновление прошло успешно, получаются новые данные
+								$result = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM articles_categories WHERE id='$id'");
+								$message = "Успешно обновлено!";
+								header("Refresh:0");
+								
+							}
+						}
+						if ($article['article_id'] == 1) {
+							//echo $article['article_id'];
+							$echo = TextСhange($article);
+						} else if ($article['article_id'] == 2) {
+							$echo = TextСhange($article);
+						} else if ($article['article_id'] == 3) {
+							$echo = TextСhange($article);
+						} else if ($article['article_id'] == 4) {
+							$resulst = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM `questions` WHERE `material-id`='$id'");
+							if (isset($_POST['test'])) {
+								$idQuest = null;
+								$countq = 0;
+								while ($resuls = mysqli_fetch_assoc($resulst)) {
+									$idQuest[] = $resuls['id'];
+								}
+								foreach ($_POST['test'] as $value) {
+									$update = mysqli_query($GLOBALS['mysqli'],"UPDATE `questions` SET `question` = '$value[question]' WHERE `questions`.`id` = $idQuest[$countq];");
+									
+									$result = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM `answers` WHERE `question-id`='$idQuest[$countq]'");
+									$idAns = null;
+									$names = null;
+									$countA = 0;
+									$ans = null;
+									while ($resula = mysqli_fetch_assoc($result)) {
+										$idAns[] = $resula['id'];
+										$names = $resula['name'];
+										$idansd = $resula['id'];
+										$ans[] =  $resula['answer'];
+									}
+									foreach ($value['answer'] as $ansVal) {
+										if (count($value['answer']) == count($idAns)) {
+											$update = mysqli_query($GLOBALS['mysqli'],"UPDATE `answers` SET `answer` = '$ansVal' WHERE `answers`.`id` = $idAns[$countA];");
+											$countA++;
+										} else if (count($value['answer']) > count($idAns)) {
+											$l = 0;
+											foreach ($ans as $values) {
+												if ($values == $ansVal) {
+													$l = 0;
+													break;
+													
+												} else if ($values != $ansVal) {
+													
+													$l=1;
+													
+												}
+											}
+											if ($l == 1) {
+												$names++;
+												$update = mysqli_query($GLOBALS['mysqli'],"INSERT INTO `answers` (`id`, `question-id`, `name`, `answer`, `choice`) VALUES (NULL,'$idQuest[$countq]','$names', '$ansVal', '0');");
+												if($update) {
+													//Если обновление прошло успешно, получаются новые данные
+													$result = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM `answers` WHERE `question-id`='$idQuest[$countq]'");
+													
+												}
+											}
+										} else if (count($value['answer']) < count($idAns)) {
+											$update = mysqli_query($GLOBALS['mysqli'],"DELETE FROM `answers` WHERE `answers`.`id` = $idansd;");
+											if($update) {
+												//Если обновление прошло успешно, получаются новые данные
+												$result = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM `answers` WHERE `question-id`='$idQuest[$countq]'");
+												
+											}
+											
+										}
+										
+									}
+									$countA = 0;
+									for ($i=0; $i < count($value['answer']); $i++) {
+										if (isset($value['choice'][$i+1])) {
+
+										} else {
+											($value['choice'])[$i+1] = 0;
+										}
+									}
+									ksort($value['choice']);
+									foreach ($value['choice'] as $ansCois) {
+										//echo $idAns[$countA];
+										$update = mysqli_query($GLOBALS['mysqli'],"UPDATE `answers` SET `choice` = '$ansCois' WHERE `answers`.`id` = $idAns[$countA];");
+										$countA++;
+									}
+									$countq++;
+								}
+								if($update) {
+									//Если обновление прошло успешно, получаются новые данные
+									$resulst = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM `questions` WHERE `material-id`='$id'");
+									
+								}
+							}
+							if(mysqli_num_rows($resulst) >= 1) {
+								$n = 1;
+								while ($resuls = mysqli_fetch_assoc($resulst)) {
+									$b = $n - 1;
+									$test = '
+									<h5>Вопрос '.$n.'</h5>
+									<textarea name="test['.$b.'][question]" id="1" cols="60" rows="10" placeholder="Введите вопрос '.$n.'">'.$resuls['question'].'</textarea>
+									<script>
+										CKEDITOR.replace( "test['.$b.'][question]" );
+									</script>
+									';
+									
+									$id = $resuls['id'];
+									$result = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM `answers` WHERE `question-id`='$id'");
+									if(mysqli_num_rows($result) >= 1) {
+										$a = 1;
+										while ($resuls = mysqli_fetch_assoc($result)) {
+											if ($resuls['choice'] == 1) {
+												$chec = 'checked';
+											} else {
+												$chec = '';
+											}
+											$answer .= '<div class="col-md-4 col-lg-3">
+											<textarea name="test['.$b.'][answer]['.$a.']" id="1" cols="60" rows="10" placeholder="Введите вопрос '.$n.'">'.$resuls['answer'].'</textarea>
+											<script>
+												CKEDITOR.replace( "test['.$b.'][answer]['.$a.']" );
+											</script>
+											<input type="checkbox" value="1" name="test['.$b.'][choice]['.$a.']" '.$chec.'>
+										</div>';
+										$a++;
+										}
+									}
+									$n++;
+									$echos .= '
+									<div class="testing_form" id="test1">
+										'.$test.'
+										<div class="answer">
+											<h5>Варианты ответов</h5>
+											<div class="row">
+												'.$answer.'
+											</div>
+										</div>
+										<div class="row">
+											<div class="minus">'.$b.'</div>
+											
+											<div class="pluss">'.$b.'</div>
+										</div>
+									</div>
+									';
+									$answer = null;
+								}
+							} else {
+								$echos = "Вопросы не были найдены!";
+							}
 							if ($article['category_id'] == 1) {
 								$Ob = 'checked';
 							} else if ($article['category_id'] == 2) {
@@ -157,11 +417,15 @@ ob_start();
 													<input id='radio-4' type='radio' name='radio-ct' value='4' $S>
 													<label for='radio-4'>Cпециальные вопросы химии</label>
 												</div><br>
-												<b>Название:</b> <input type='text' name='title' value='$article[title]'><br>
+												<br>Название:</br> <input type='text' name='title' value='$article[title]'><br>
 												<b>Текст:</b>
 												<textarea name='text' id='text' rows='10' cols='80'>
 													$article[text]
 												</textarea>
+												<h3>Тест</h3>
+												<div class='testing'>
+													".$echos."
+												</div>
 												<script>
 													CKEDITOR.replace( 'text' );
 												</script>
@@ -171,228 +435,12 @@ ob_start();
 										</div>
 									</div>
 								</div>";
-                            return $echo;
-						}
-						
-						if(mysqli_num_rows($result) == 1) {
-							if(isset($_POST['title']) && isset($_POST['text'])) {
-								//Тут должна быть валидация
-								//Обновление таблицы
-								$update = mysqli_query($GLOBALS['mysqli'],"UPDATE materials SET title='$_POST[title]', text='$_POST[text]' WHERE id='$id'");
-								if(isset($_POST['radio-ct'])) {
-									$update = mysqli_query($GLOBALS['mysqli'],"UPDATE materials SET category_id=".$_POST['radio-ct']." WHERE id='$id'");
-								}
-								if($update) {
-									//Если обновление прошло успешно, получаются новые данные
-									$result = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM materials WHERE id='$id'");
-									$message = "Успешно обновлено!";
-									header("Refresh:0");
-									
-								}
-							}
-                            if ($article['article_id'] == 1) {
-								//echo $article['article_id'];
-								$echo = TextСhange($article);
-                            } else if ($article['article_id'] == 2) {
-								$echo = TextСhange($article);
-							} else if ($article['article_id'] == 3) {
-								$echo = TextСhange($article);
-							} else if ($article['article_id'] == 4) {
-								$resulst = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM `questions` WHERE `material-id`='$id'");
-								if (isset($_POST['test'])) {
-                                    $idQuest = null;
-									$countq = 0;
-									while ($resuls = mysqli_fetch_assoc($resulst)) {
-                                        $idQuest[] = $resuls['id'];
-									}
-									foreach ($_POST['test'] as $value) {
-										$update = mysqli_query($GLOBALS['mysqli'],"UPDATE `questions` SET `question` = '$value[question]' WHERE `questions`.`id` = $idQuest[$countq];");
-										
-										$result = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM `answers` WHERE `question-id`='$idQuest[$countq]'");
-										$idAns = null;
-                                        $names = null;
-										$countA = 0;
-                                        $ans = null;
-										while ($resula = mysqli_fetch_assoc($result)) {
-											$idAns[] = $resula['id'];
-											$names = $resula['name'];
-											$idansd = $resula['id'];
-                                            $ans[] =  $resula['answer'];
-										}
-                                        foreach ($value['answer'] as $ansVal) {
-											if (count($value['answer']) == count($idAns)) {
-												$update = mysqli_query($GLOBALS['mysqli'],"UPDATE `answers` SET `answer` = '$ansVal' WHERE `answers`.`id` = $idAns[$countA];");
-                                            	$countA++;
-											} else if (count($value['answer']) > count($idAns)) {
-                                                $l = 0;
-												foreach ($ans as $values) {
-													if ($values == $ansVal) {
-														$l = 0;
-														break;
-                                                       
-													} else if ($values != $ansVal) {
-														
-                                                        $l=1;
-														
-													}
-												}
-												if ($l == 1) {
-													$names++;
-													$update = mysqli_query($GLOBALS['mysqli'],"INSERT INTO `answers` (`id`, `question-id`, `name`, `answer`, `choice`) VALUES (NULL,'$idQuest[$countq]','$names', '$ansVal', '0');");
-													if($update) {
-														//Если обновление прошло успешно, получаются новые данные
-														$result = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM `answers` WHERE `question-id`='$idQuest[$countq]'");
-														
-													}
-												}
-											} else if (count($value['answer']) < count($idAns)) {
-												$update = mysqli_query($GLOBALS['mysqli'],"DELETE FROM `answers` WHERE `answers`.`id` = $idansd;");
-												if($update) {
-													//Если обновление прошло успешно, получаются новые данные
-													$result = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM `answers` WHERE `question-id`='$idQuest[$countq]'");
-													
-												}
-												
-											}
-											
-										}
-										$countA = 0;
-										for ($i=0; $i < count($value['answer']); $i++) {
-											if (isset($value['choice'][$i+1])) {
 
-											} else {
-												($value['choice'])[$i+1] = 0;
-											}
-										}
-                                        ksort($value['choice']);
-										foreach ($value['choice'] as $ansCois) {
-                                            //echo $idAns[$countA];
-											$update = mysqli_query($GLOBALS['mysqli'],"UPDATE `answers` SET `choice` = '$ansCois' WHERE `answers`.`id` = $idAns[$countA];");
-											$countA++;
-										}
-										$countq++;
-									}
-									if($update) {
-										//Если обновление прошло успешно, получаются новые данные
-										$resulst = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM `questions` WHERE `material-id`='$id'");
-										
-									}
-								}
-								if(mysqli_num_rows($resulst) >= 1) {
-									$n = 1;
-									while ($resuls = mysqli_fetch_assoc($resulst)) {
-                                        $b = $n - 1;
-                                        $test = '
-										<h5>Вопрос '.$n.'</h5>
-										<textarea name="test['.$b.'][question]" id="1" cols="60" rows="10" placeholder="Введите вопрос '.$n.'">'.$resuls['question'].'</textarea>
-										<script>
-											CKEDITOR.replace( "test['.$b.'][question]" );
-										</script>
-										';
-										
-                                        $id = $resuls['id'];
-										$result = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM `answers` WHERE `question-id`='$id'");
-										if(mysqli_num_rows($result) >= 1) {
-											$a = 1;
-											while ($resuls = mysqli_fetch_assoc($result)) {
-												if ($resuls['choice'] == 1) {
-                                                    $chec = 'checked';
-												} else {
-                                                    $chec = '';
-												}
-												$answer .= '<div class="col-md-4 col-lg-3">
-												<textarea name="test['.$b.'][answer]['.$a.']" id="1" cols="60" rows="10" placeholder="Введите вопрос '.$n.'">'.$resuls['answer'].'</textarea>
-												<script>
-													CKEDITOR.replace( "test['.$b.'][answer]['.$a.']" );
-												</script>
-												<input type="checkbox" value="1" name="test['.$b.'][choice]['.$a.']" '.$chec.'>
-											</div>';
-                                            $a++;
-											}
-										}
-										$n++;
-										$echos .= '
-										<div class="testing_form" id="test1">
-											'.$test.'
-											<div class="answer">
-												<h5>Варианты ответов</h5>
-												<div class="row">
-													'.$answer.'
-												</div>
-											</div>
-											<div class="row">
-												<div class="minus">'.$b.'</div>
-												
-												<div class="pluss">'.$b.'</div>
-											</div>
-										</div>
-										';
-                                        $answer = null;
-									}
-								} else {
-                                    $echos = "Вопросы не были найдены!";
-								}
-								if ($article['category_id'] == 1) {
-									$Ob = 'checked';
-								} else if ($article['category_id'] == 2) {
-									$N = 'checked';
-								} else if ($article['category_id'] == 3) {
-									$Or = 'checked';
-								} else if ($article['category_id'] == 4) {
-									$S = 'checked';
-								}
-								$echo = "
-									<div class='table'>
-										<div class='table-wrapper'>
-											<div class='table-title'>Редактирование статьи</div>
-											<div class='table-content'>
-												<a href='?act=home'><- Вернуться</a><br>
-												$message
-												<form method='post' class='article-form'>
-													<div class='form_radio_btn'>
-														<input id='radio-1' type='radio' name='radio-ct' value='1' $Ob>
-														<label for='radio-1'>Общая химия</label>
-													</div>
-													
-													<div class='form_radio_btn'>
-														<input id='radio-2' type='radio' name='radio-ct' value='2' $N>
-														<label for='radio-2'>Неорганическая химия</label>
-													</div>
-													
-													<div class='form_radio_btn'>
-														<input id='radio-3' type='radio' name='radio-ct' value='3' $Or>
-														<label for='radio-3'>Органическая химия</label>
-													</div>
-													
-													<div class='form_radio_btn'>
-														<input id='radio-4' type='radio' name='radio-ct' value='4' $S>
-														<label for='radio-4'>Cпециальные вопросы химии</label>
-													</div><br>
-													<br>Название:</br> <input type='text' name='title' value='$article[title]'><br>
-													<b>Текст:</b>
-													<textarea name='text' id='text' rows='10' cols='80'>
-														$article[text]
-													</textarea>
-													<h3>Тест</h3>
-													<div class='testing'>
-														".$echos."
-													</div>
-													<script>
-														CKEDITOR.replace( 'text' );
-													</script>
-													</br>
-													<input type='submit' class='button' value='Сохранить'>
-												</form>
-											</div>
-										</div>
-									</div>";
-
-								
-									
-							}
 							
-						}
+								
+						} 
 					}
+					
 				break;
 				case 'add_user':
 						if(isset($_POST['reglogin']) && isset($_POST['regpassword'])) {

@@ -24,8 +24,25 @@ require "includes/config.php";
 		<?php
 			$article = $mysqli->query("SELECT * FROM `articles_categories` WHERE `id` =".(int)$_GET['id']);
 			/*checks the sent id for extra characters*/
-		  	if (mysqli_num_rows($article) <= 0 )
-		  	{
+		  	if ($_GET['id'] == 5)
+			{
+				?>
+			  	<div class="filling">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="content">
+									<?php 
+                                        echo mysqli_fetch_assoc($article)['text'];
+									?>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<?php
+			} elseif (mysqli_num_rows($article) <= 0 )
+			{
 				?>
 			  	<section class="crossroads">
 					<div class="container">
@@ -36,12 +53,10 @@ require "includes/config.php";
 						</div>
 					</div>
 				</section>
-
 				<?php
-			} else {
+			}else {
 				$art = mysqli_fetch_assoc($article);
 				?>
-
 				<section class="crossroads">
 					<div class="container">
 						<div class="row">
@@ -73,11 +88,11 @@ require "includes/config.php";
 															if ($item['id'] >= 1) {
 																$quer = $mysqli->query('SELECT * FROM `materials` WHERE `category_id` ='.(int)$_GET['id'].' AND `article_id` ='.$item['id']);
 																while ($materials = mysqli_fetch_assoc($quer))
-															{
-																	?>
-																	<li><a href="/lectures.php?id=<?php echo $materials['id']; ?>"><?php echo $materials['title'] ?></a></li>
-																	<?php
-															}
+																{
+																		?>
+																		<li><a href="/lectures.php?id=<?php echo $materials['id']; ?>"><?php echo $materials['title'] ?></a></li>
+																		<?php
+																}
 
 															} else
 															{

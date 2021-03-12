@@ -4,7 +4,12 @@
 	
 ?>
 <!-- General site header -->
-
+<?php if(preg_match('#\?|&|%|/notify$|^/cart#', $_SERVER['REQUEST_URI']))
+{ ?>
+	<meta name="robots" content="noindex, nofollow" />
+<?php 
+} 
+?>
 <header>
 	<nav>
 		<div class="container">
@@ -22,12 +27,12 @@
 						?>
 						<!-- the main menu item is generated in order using the table elements and also creates a link that is unique for each of the elements with certain ID -->
 						<?php
-							while ($item = mysqli_fetch_assoc($query))
-							{
-								?>
-								<li class="menu_item"><a href="/crossroad.php?id=<?php echo $item['id']; ?>" class="menu_link"><?php echo $item['title']; ?></a></li>
-							<?php
-							}
+							while ($item = mysqli_fetch_assoc($query)) 
+							{ 
+								?> 
+								<li class="menu_item"><a href="/crossroad.php?id=<?php echo $item['id']; ?>" class="menu_link"><?php echo $item['title']; ?></a></li> 
+							<?php 
+							} 
 						?>
 					</ul>
 				</div>
@@ -40,8 +45,8 @@
 							// если нет, то выводим блок с ссылками на страницу регистрации и авторизации
 					?>
 							<div id="link_auth">
-								<a class="login" href="/form_auth.php" alt="icons/vector/login.svg">
-									<img class="login_img" src="/icons/vector/login.svg">
+								<a class="login" href="/form_auth.php">
+									<img class="login_img" alt="Войти" src="/icons/vector/login.svg">
 								</a>
 							</div>
 					<?php
@@ -49,13 +54,13 @@
 							//Если пользователь авторизован, то выводим ссылку Выход
 					?> 
 							<div id="link_logout">
-								<a href="/includes/logout.php" alt="icons/vector/login.svg">
-									<img class="adminPanel_img" src="/icons/vector/logOut.svg">
+								<a href="/includes/logout.php">
+									<img class="adminPanel_img" alt="Выйти" src="/icons/vector/logOut.svg">
 								</a>
 							</div>
 							<div id="link_adminPanel">
-								<a href="/adminPanel.php" alt="icons/vector/login.svg">
-									<img class="adminPanel_img" src="/icons/vector/adminPanel.svg">
+								<a href="/adminPanel.php">
+									<img class="adminPanel_img" alt="Админ панель" src="/icons/vector/adminPanel.svg">
 								</a>
 							</div>
 					<?php
@@ -63,7 +68,7 @@
 						ob_end_flush();
 					?>
 				</div>
-				<a href=""  class="back" onclick="javascript:history.back(-2); return false;"  alt="icons/vector/batton_back.svg">
+				<a href=""  class="back" onclick="javascript:history.back(-2); return false;">
 					<img class="back_img" src="icons/vector/batton_back.svg" alt="back_img">
 				</a>
 				<div class="hamburger">

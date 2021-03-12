@@ -17,22 +17,12 @@ require "includes/config.php";
 	</head>
 	<body>
 		<?php include "includes/header.php" ?>
-				<div class="dropdown">
-					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item" href="#">Теор. часть</a>
-						<a class="dropdown-item" href="#">Лб. работа</a>
-						<a class="dropdown-item" href="#"> Практика</a>
-						<a class="dropdown-item" href="#"> Тесты</a>
-						<a class="dropdown-item" href="#"> Видео материалы</a>
-						<a class="dropdown-item" href="#"> Справочные материалы</a>
-					</div>
-				</div>
+				
 		<div class="filling">
 
 			<div class="container">
 				<div class="row">
-					<div class="col">
+					<div class="col-12 col-md-9">
 						<div class="content">
 							<?php
 								$article = mysqli_fetch_assoc($mysqli->query('SELECT * FROM `articles_id`'));
@@ -102,7 +92,6 @@ require "includes/config.php";
 										<div class="container">
 											<div class="row">
 												<div class="col-md-12">
-													<h2 class="direction"><?php echo $materials['title']; ?></h2>
 													<h4 class="direction"><?php echo $materials['text']; ?></h2>
 												</div>
 											</div>
@@ -126,7 +115,7 @@ require "includes/config.php";
 												</div>
 											</div>
 										</div>
-									</div>			
+												
 									<?php
 								} else {
 									//var_dump($materials);
@@ -140,6 +129,41 @@ require "includes/config.php";
 							?>
 
 
+						</div>
+					</div>
+					<div class="col">
+						<div class="tag_menu">
+							<h3>Связаные темы</h3>
+							<?php
+								$query = $mysqli->query('SELECT * FROM `articles_id`');
+							?>
+							<?php
+                                while ($item = mysqli_fetch_assoc($query)) {
+									echo $item['title'];
+									$tems = "";
+									if ($item['id'] >= 1) {
+										$quer = $mysqli->query('SELECT * FROM `materials` WHERE `article_id` ='.$item['id']);
+										while ($materials = mysqli_fetch_assoc($quer)) {
+											$tems .= "<li><a href='/lectures.php?id=".$materials['id']."; ?>'>".$materials['title']."</a></li>";
+										
+										}
+									} else {
+										$tems = "<li><div>Данный материал отсутствует</div></li>";
+									}
+									echo '
+									<div class="tag_item">
+										<div class="alert alert-dark" role="alert">
+											'.$item['title'].'
+											<ul>
+												'.$tems.'
+											</ul>
+										</div>
+									</div>
+										
+										';
+                                }
+								?>
+									
 						</div>
 					</div>
 				</div>

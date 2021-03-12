@@ -48,17 +48,22 @@ require "includes/config.php";
 					<?php
 						while ($item = mysqli_fetch_assoc($query))
 						{
-							?>
+							if ($item['id'] == 5) {
+							} else {
+                                ?>
 							<div class="col-md-6">
 								<a href="/crossroad.php?id=<?php echo $item['id']; ?>">
 									<div class="second_item second_item_<?php echo $item['id']; ?>">
 										<div class="second_item_subtitle">
-											<?php echo $item['title'] ?>
+											
+											<?php echo $item['title']; ?>
 										</div>
 									</div>
 								</a>
 							</div>
+							
 						<?php
+                            }
 						}
 					?>
 				</div>
@@ -77,13 +82,13 @@ require "includes/config.php";
 					</ol>
 					<div class="carousel-inner">
 						<div class="carousel-item active">
-						<img class="d-block w-100" src="icons/iso/ionwork1.png" alt="Первый слайд">
+						<img class="d-block w-100" src="icons/iso/ionwork1.webp" alt="Первый слайд">
 						</div>
 						<div class="carousel-item">
-						<img class="d-block w-100" src="icons/iso/ionwork2.png" alt="Второй слайд">
+						<img class="d-block w-100" src="icons/iso/ionwork2.webp" alt="Второй слайд">
 						</div>
 						<div class="carousel-item">
-						<img class="d-block w-100" src="icons/iso/ionwork3.png" alt="Третий слайд">
+						<img class="d-block w-100" src="icons/iso/ionwork3.webp" alt="Третий слайд">
 						</div>
 					</div>
 					<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">

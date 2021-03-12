@@ -1,3 +1,14 @@
 Robot.txt
 User-agent: *
 Disallow: /adminPanel.php
+Disallow: /?
+Disallow: //
+Disallow: ///
+Disallow: ////
+Disallow: /////
+Disallow: //////
+Disallow: ///////
+Disallow: ////////
+Disallow: /////////
+Disallow: /index/
+Disallow: /index.php/

@@ -1,4 +1,6 @@
 <!-- General site footer -->
+<script  src="https://yastatic.net/jquery/2.1.3/jquery.min.js"></script>
+<script  src="/js/buttonup.js"></script>
 <footer>
 	<div class="footer_wrapper">
 		<div>
