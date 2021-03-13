@@ -16,18 +16,25 @@ require "includes/config.php";
 		<title>NEKRASOVA SCHOOL</title>
 	</head>
 	<body>
-		<?php include "includes/header.php" ?>
-				
+		<?php include "includes/header.php"?>
+		
+		
 		<div class="filling">
 
 			<div class="container">
 				<div class="row">
-					<div class="col-12 col-md-9">
+					<?php
+						$quer = $mysqli->query('SELECT * FROM `materials` WHERE `id` ='.(int)$_GET['id']);
+						$materials = mysqli_fetch_assoc($quer);
+						$mdCol = "";
+						if ($materials['tag'] != null) {
+							$mdCol = "col-md-9";
+						}
+					?>
+					<div class="col-12 <?php echo $mdCol?>">
 						<div class="content">
 							<?php
 								$article = mysqli_fetch_assoc($mysqli->query('SELECT * FROM `articles_id`'));
-								$quer = $mysqli->query('SELECT * FROM `materials` WHERE `id` ='.(int)$_GET['id']);
-								$materials = mysqli_fetch_assoc($quer);
 								/*checks the sent id for extra characters*/
 								if (mysqli_num_rows($quer) <= 0 ) {
 									?>
@@ -131,41 +138,56 @@ require "includes/config.php";
 
 						</div>
 					</div>
-					<div class="col">
-						<div class="tag_menu">
-							<h3>Связаные темы</h3>
-							<?php
-								$query = $mysqli->query('SELECT * FROM `articles_id`');
-							?>
-							<?php
-                                while ($item = mysqli_fetch_assoc($query)) {
-									echo $item['title'];
-									$tems = "";
-									if ($item['id'] >= 1) {
-										$quer = $mysqli->query('SELECT * FROM `materials` WHERE `article_id` ='.$item['id']);
-										while ($materials = mysqli_fetch_assoc($quer)) {
-											$tems .= "<li><a href='/lectures.php?id=".$materials['id']."; ?>'>".$materials['title']."</a></li>";
-										
-										}
-									} else {
-										$tems = "<li><div>Данный материал отсутствует</div></li>";
-									}
-									echo '
-									<div class="tag_item">
-										<div class="alert alert-dark" role="alert">
-											'.$item['title'].'
-											<ul>
-												'.$tems.'
-											</ul>
+					<?php
+						if ($materials['tag'] != null) {
+								?>
+									<div class="col">
+										<div class="tag_menu">
+											<h3>Связаные темы</h3>
+											<?php
+												$query = $mysqli->query('SELECT * FROM `articles_id`');
+											?>
+											<?php
+												
+												
+												while ($item = mysqli_fetch_assoc($query)) {
+													//echo $item['title'];
+													$tems = "";
+													if ($item['id'] >= 1) {
+														$quer = $mysqli->query('SELECT * FROM `materials` WHERE `article_id` ='.$item['id']);
+														
+														while ($material = mysqli_fetch_assoc($quer)) {
+															if ( $material['tag'] == $materials['tag']) {
+																$tems .= "<li><a href='/lectures.php?id=".$material['id']."; ?>'>".$material['title']."</a></li>";
+															} else {
+																$tems = "¯\_(ツ)_/¯";
+															}
+															
+														
+														}
+													} else {
+														$tems = "<li><div>Данный материал отсутствует</div></li>";
+													}
+													echo '
+													<div class="tag_item">
+														<div class="alert alert-dark" role="alert">
+															'.$item['title'].'
+															<ul>
+																'.$tems.'
+															</ul>
+														</div>
+													</div>
+														
+														';
+												}
+												?>
+													
 										</div>
 									</div>
-										
-										';
-                                }
-								?>
-									
-						</div>
-					</div>
+								<?php	
+						}
+					?>
+					
 				</div>
 			</div>
 

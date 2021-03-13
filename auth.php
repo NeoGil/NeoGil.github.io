@@ -141,7 +141,7 @@ require "includes/config.php";
             
             //Возвращаем пользователя на страницу авторизации
             header("HTTP/1.1 301 Moved Permanently");
-            header("Location: http://schoolnk/form_auth.php");
+            header("Location: /form_auth.php");
     
             //Останавливаем скрипт
             exit();

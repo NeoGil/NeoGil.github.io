@@ -94,6 +94,17 @@ ob_start();
 					} else {
 						$users = "Статей пока нет";
 					}
+					$tags = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM tags");
+					if(mysqli_num_rows($users_result) >= 1) {
+						while($tag = mysqli_fetch_array($tags)) {
+							$tagres .= "<div class='table-content__list-item'>
+							<a href='?act=edit_tag&id=$tag[id]'>$tag[id] | $tag[title]</a>
+								<input type='checkbox' name='delete_rowT[]' value='" . $tag["id"] . "'>
+							</div>";
+						}
+					} else {
+						$tagres = "Статей пока нет";
+					}
 					$resultsC = $mysqli->query("SELECT * FROM articles_categories WHERE id='5'");
 					$echo = "   $articl
 								<div class='col-md'>
@@ -106,8 +117,9 @@ ob_start();
 											</div>
 										</div>
 									</div>
-								</div><div class='col-md'>
-								<div class='ar_ct'>
+								</div>
+								
+								<div class='col-md'>
 									<div class='table'>
 										<div class='table-wrapper'>
 											<div class='table-title'>Спец настройки</div>
@@ -115,6 +127,19 @@ ob_start();
 												<div class='table-content__list-item'>
 													<a href='?act=edit_article&ct=5'>Споавочные данные</a>
 												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class='col-md'>
+									<div class='table'>
+										<div class='table-wrapper'>
+											<div class='table-title'>Теги</div>
+											<div class='table-content'>
+												<form class='form1' action='/includes/delete.php' method='POST'>
+													$tagres
+												<button type='submit' onclick='ask(); return false;'><img src='/icons/vector/delet.svg' alt='deletBtn'></button></form>
+												<a href='?act=add_tag'class='table__add-button'id='add_tag'>+</a>
 											</div>
 										</div>
 									</div>
@@ -160,7 +185,7 @@ ob_start();
                         $Or = null;
                         $S = null;
                     }
-						
+					
 					function TextСhange($article) {
 						if ($article['category_id'] == 1) {
 							$Ob = 'checked';
@@ -171,6 +196,25 @@ ob_start();
 						} else if ($article['category_id'] == 4) {
 							$S = 'checked';
 						}
+						$tags = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM tags");
+						if(mysqli_num_rows($tags) >= 1) {
+							while($tag = mysqli_fetch_array($tags)) {
+								if ( $article['tag'] == $tag['id']){
+									$tagres .= "
+									<option selected value='$tag[id]'>
+										$tag[title]
+									</option>";
+								} else {
+									$tagres .= "
+									<option value='$tag[id]'>
+										$tag[title]
+									</option>";
+								}
+								
+							}
+						} else {
+							$tagres = "Статей пока нет";
+						}
 						$echo = "
 							<div class='table'>
 								<div class='table-wrapper'>
@@ -179,6 +223,15 @@ ob_start();
 										<a href='?act=home'><- Вернуться</a><br>
 										$message
 										<form method='post' class='article-form'>
+											<div class='input-group mb-3'>
+												<div class='input-group-prepend'>
+													<label class='input-group-text' for='inputGroupSelect01'>Тег</label>
+												</div>
+												<select name='tag' class='custom-select' id='inputGroupSelect01'>
+													<option value='NULL'>Выберите...</option>
+													$tagres
+												</select>
+											</div>
 											<div class='form_radio_btn'>
 												<input id='radio-1' type='radio' name='radio-ct' value='1' $Ob>
 												<label for='radio-1'>Общая химия</label>
@@ -214,11 +267,17 @@ ob_start();
 							</div>";
 						return $echo;
 					}
+					
 					if(mysqli_num_rows($result) == 1) {
 						if(isset($_POST['title']) && isset($_POST['text'])) {
 							//Тут должна быть валидация
 							//Обновление таблицы
-							$update = mysqli_query($GLOBALS['mysqli'],"UPDATE materials SET title='$_POST[title]', text='$_POST[text]' WHERE id='$id'");
+							if ($_POST['tag'] == NULL) {
+                                $tag_ = $_POST['tag'];
+							} else {
+								$tag_ = "$_POST[tag]";
+							}
+							$update = mysqli_query($GLOBALS['mysqli'],"UPDATE materials SET title='$_POST[title]', text='$_POST[text]', tag=$tag_ WHERE id='$id'");
 							if(isset($_POST['radio-ct'])) {
 								$update = mysqli_query($GLOBALS['mysqli'],"UPDATE materials SET category_id=".$_POST['radio-ct']." WHERE id='$id'");
 							}
@@ -228,6 +287,8 @@ ob_start();
 								$message = "Успешно обновлено!";
 								header("Refresh:0");
 								
+							} else {
+                                echo "nomr";
 							}
 						} elseif (isset($_POST['textc']) && $_GET['ct'] == 5) {
 							$update = mysqli_query($GLOBALS['mysqli'],"UPDATE articles_categories SET text='$_POST[textc]' WHERE id='5'");
@@ -390,6 +451,25 @@ ob_start();
 							} else if ($article['category_id'] == 4) {
 								$S = 'checked';
 							}
+							$tags = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM tags");
+							if(mysqli_num_rows($tags) >= 1) {
+								while($tag = mysqli_fetch_array($tags)) {
+									if ( $article['tag'] == $tag['id']){
+										$tagres .= "
+										<option selected value='$tag[id]'>
+											$tag[title]
+										</option>";
+									} else {
+										$tagres .= "
+										<option value='$tag[id]'>
+											$tag[title]
+										</option>";
+									}
+									
+								}
+							} else {
+								$tagres = "Тегов пока нет";
+							}
 							$echo = "
 								<div class='table'>
 									<div class='table-wrapper'>
@@ -398,6 +478,15 @@ ob_start();
 											<a href='?act=home'><- Вернуться</a><br>
 											$message
 											<form method='post' class='article-form'>
+												<div class='input-group mb-3'>
+													<div class='input-group-prepend'>
+														<label class='input-group-text' for='inputGroupSelect01'>Тег</label>
+													</div>
+													<select name='tag' class='custom-select' id='inputGroupSelect01'>
+														<option value='NULL'>Выберите...</option>
+														$tagres
+													</select>
+												</div>
 												<div class='form_radio_btn'>
 													<input id='radio-1' type='radio' name='radio-ct' value='1' $Ob>
 													<label for='radio-1'>Общая химия</label>
@@ -438,7 +527,9 @@ ob_start();
 
 							
 								
-						} 
+						} else if ($article['article_id'] == 5) {
+							$echo = TextСhange($article);
+						}
 					}
 					
 				break;
@@ -477,6 +568,64 @@ ob_start();
 						</div>
 						</div>";
 				break;
+				case 'add_tag':
+					if(isset($_POST['title'])) {
+						$check = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM tags WHERE title='$_POST[title]'");
+						if(mysqli_num_rows($check) == 0) {
+							$insert = mysqli_query($GLOBALS['mysqli'],"INSERT INTO tags (id,title) VALUE (null,'$_POST[title]')");
+							if($insert) {
+								$message = "Тег успешно добавлен!";
+							} else {
+								$message = "Ошибка! ".mysqli_error($GLOBALS['mysqli']);
+							}
+						} else {
+							$message = "Такое название уже занято";
+						}
+					}
+					$echo = "
+					<div class='table'>
+						<div class='table-wrapper'>
+							<div class='table-title'>Новый пользователь</div>
+							<div class='table-content'>
+								<a href='?act=home'><- Вернуться</a><br>
+								$message
+								<form method='post' class='user-form'>
+									<b>Название тега:</b> <input type='text' name='title' required><br>
+									<input type='submit' class='button' value='Добавить'>
+								</form>
+							</div>
+						</div>
+					</div>";
+				break;
+				case 'edit_tag':
+					if(isset($_POST['title'])) {
+						
+						$insert = mysqli_query($GLOBALS['mysqli'],"UPDATE tags SET title = '$_POST[title]' WHERE id = '$_GET[id]'");
+						if($insert) {
+							$message = "Тег успешно обновлён!";
+						} else {
+							$message = "Ошибка! ".mysqli_error($GLOBALS['mysqli']);
+						}
+						
+					}
+					$result = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM tags WHERE id='$_GET[id]'");
+                    $tag = mysqli_fetch_array($result);
+					$echo = "
+						<div class='table'>
+							<div class='table-wrapper'>
+								<div class='table-title'>Редактирование статьи</div>
+								<div class='table-content'>
+									<a href='?act=home'><- Вернуться</a><br>
+									$message
+									<form method='post' class='article-form'>
+										<b>Название: </b><input type='text' name='title' value='$tag[title]' required><br>
+										</br>
+										<input type='submit' class='button' value='Сохранить'>
+									</form>
+								</div>
+							</div>
+						</div>";
+                break;
 				case 'add_article':
 					
 					if ($_GET['id'] == 1 or $_GET['id'] == 2 or $_GET['id'] == 3 or $_GET['id'] == 5) {
@@ -486,7 +635,12 @@ ob_start();
 							} else {
 								$check = mysqli_query($GLOBALS['mysqli'], "SELECT * FROM materials WHERE title='$_POST[title]'");
 								if (mysqli_num_rows($check) == 0) {
-									$result = $mysqli->query("INSERT INTO `materials` (`id`, `title`, `text`, `category_id`, `article_id`) VALUES (NULL, '{$_POST['title']}', '{$_POST['editor1']}', '{$_POST['radio-ct']}', '{$_GET['id']}');");
+									if ($_POST['tag'] == NULL) {
+										$tag_ = $_POST['tag'];
+									} else {
+										$tag_ = "$_POST[tag]";
+									}
+									$result = $mysqli->query("INSERT INTO `materials` (`id`, `title`, `text`, `category_id`, `article_id`, `tag`) VALUES (NULL, '{$_POST['title']}', '{$_POST['editor1']}', '{$_POST['radio-ct']}', '{$_GET['id']}', $tag_);");
 								} else {
 									echo '<p>Произошла ошибка: Есть статья с таким названием! </p>';
 								}
@@ -512,7 +666,12 @@ ob_start();
 								//form.reset();
 								//echo $check;
 								if ( mysqli_num_rows($check) == 0) {
-									$result = $mysqli->query("INSERT INTO `materials` (`id`, `title`, `text`, `category_id`, `article_id`) VALUES (NULL, '{$_POST['title']}', '{$_POST['editor1']}', '{$_POST['radio-ct']}', '4');");
+									if ($_POST['tag'] == NULL) {
+										$tag_ = $_POST['tag'];
+									} else {
+										$tag_ = "$_POST[tag]";
+									}
+									$result = $mysqli->query("INSERT INTO `materials` (`id`, `title`, `text`, `category_id`, `article_id`, `tag`) VALUES (NULL, '{$_POST['title']}', '{$_POST['editor1']}', '{$_POST['radio-ct']}', '4', $tag_);");
 									$result = $mysqli->query('SELECT * FROM `materials` WHERE `title` ="'.$_POST['title'].'"');
 									while ($myrow = mysqli_fetch_assoc($result)) {
 										//echo $myrow['id'];
@@ -705,7 +864,17 @@ ob_start();
 
 					} 
 					
-					
+					$tags = mysqli_query($GLOBALS['mysqli'],"SELECT * FROM tags");
+					if(mysqli_num_rows($tags) >= 1) {
+						while($tag = mysqli_fetch_array($tags)) {
+							$tagres .= "
+							<option value='$tag[id]'>
+								$tag[title]
+							</option>";
+						}
+					} else {
+						$tagres = "Тегов пока нет";
+					}
 
 					$echo = "<div class='table'>
 					<div class='table-wrapper'>
@@ -714,41 +883,50 @@ ob_start();
 					<a href='?act=home'><- Вернуться</a><br>
 					$message
 					<form method='post' class='article-form'>".'
-					<div class="categore">
-								<h5>Выберите катигорию</h5>
-								<div class="form_radio_btn">
-									<input id="radio-1" type="radio" name="radio-ct" value="1" checked>
-									<label for="radio-1">Общая химия</label>
+						<div class="categore">
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<label class="input-group-text" for="inputGroupSelect01">Тег</label>
 								</div>
-								
-								<div class="form_radio_btn">
-									<input id="radio-2" type="radio" name="radio-ct" value="2">
-									<label for="radio-2">Неорганическая химия</label>
-								</div>
-								
-								<div class="form_radio_btn">
-									<input id="radio-3" type="radio" name="radio-ct" value="3">
-									<label for="radio-3">Органическая химия</label>
-								</div>
-								
-								<div class="form_radio_btn">
-									<input id="radio-4" type="radio" name="radio-ct" value="4">
-									<label for="radio-4">Cпециальные вопросы химии</label>
-								</div>
-							</div><br>
-							<input type="text" name="title", placeholder="Введите название">
+								<select name="tag" class="custom-select" id="inputGroupSelect01">
+									<option value="NULL">Выберите...</option>
+									'."$tagres".'
+								</select>
+							</div>
+							<h5>Выберите катигорию</h5>
+							<div class="form_radio_btn">
+								<input id="radio-1" type="radio" name="radio-ct" value="1" checked>
+								<label for="radio-1">Общая химия</label>
+							</div>
 							
-							<textarea name="editor1" id="editor1" rows="10" cols="80">
-								This is my textarea to be replaced with CKEditor 4.
-							</textarea>
-
-							'.$testing.'
+							<div class="form_radio_btn">
+								<input id="radio-2" type="radio" name="radio-ct" value="2">
+								<label for="radio-2">Неорганическая химия</label>
+							</div>
 							
-							<input type="submit" class="button" value="Добавить">'."
+							<div class="form_radio_btn">
+								<input id="radio-3" type="radio" name="radio-ct" value="3">
+								<label for="radio-3">Органическая химия</label>
+							</div>
+							
+							<div class="form_radio_btn">
+								<input id="radio-4" type="radio" name="radio-ct" value="4">
+								<label for="radio-4">Cпециальные вопросы химии</label>
+							</div>
+						</div><br>
+						<input type="text" name="title", placeholder="Введите название">
+							
+						<textarea name="editor1" id="editor1" rows="10" cols="80">
+							This is my textarea to be replaced with CKEditor 4.
+						</textarea>
 
-							<script>
-								CKEDITOR.replace( 'editor1' );
-							</script>
+						'.$testing.'
+							
+						<input type="submit" class="button" value="Добавить">'."
+
+						<script>
+							CKEDITOR.replace( 'editor1' );
+						</script>
 					</form>
 					</div>
 					</div>
